@@ -1,4 +1,5 @@
 import router from './routes.js';
+import auth from './auth.js';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -18,7 +19,17 @@ Vue.use(VueRouter);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+ router.beforeEach((to, from, next) => {
+  if (to.matched.some(x => x.meta.requiresAuth)) {
+    auth.check();
+    if(!auth.user.authenticated) {
+      next({ path: '/signin', query: { redirect: to.fullPath } });
+    }
+  }
+  next();
+});
+
+Vue.component('App', require('./components/App.vue'));
 
 const app = new Vue({
     el: '#app',
