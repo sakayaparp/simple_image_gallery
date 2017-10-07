@@ -1,4 +1,5 @@
 import router from './routes.js';
+import axios from 'axios';
 
 export default {
   user: {
@@ -8,9 +9,12 @@ export default {
   check() {
     let token = localStorage.getItem('id_token')
     if (token !== null) {
-      axios.get('api/user?token=' + token).then(response => {
-        this.user.authenticated = true
-        this.user.profile = response.data.data
+      return new Promise((resolve, reject) => {
+        axios.get('api/user?token=' + token).then(response => {
+          this.user.authenticated = true
+          this.user.profile = response.data.data
+          resolve(response.data.data);
+        });
       });
     }
   },
@@ -34,6 +38,7 @@ export default {
         password: password
     }).then(response => {
       context.error = false
+      localStorage.setItem('email', email)
       localStorage.setItem('id_token', response.data.meta.token)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
 
@@ -49,6 +54,7 @@ export default {
   },
   signout() {
     localStorage.removeItem('id_token');
+    localStorage.removeItem('email');
     this.user.authenticated = false
     this.user.profile = null
 

@@ -9,6 +9,7 @@
         <title>Simple Image Gallery</title>
 
         <link href="css/app.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
         <div id="app">

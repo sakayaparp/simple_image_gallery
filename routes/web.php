@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/upload', 'ImageController@uploadImage');
+
 Route::group(['middleware' => ['api']], function () {
     Route::post('/api/register', [
         'uses' => 'Auth\AuthController@register',
@@ -30,4 +32,6 @@ Route::group(['middleware' => ['api']], function () {
         ]);
     });
 
+    Route::get('/api/getDiskUsageOverview', 'ImageController@getDiskUsageOverview');
+    Route::get('/api/diskUsageCompositions', 'ImageController@diskUsageCompositions');
 });
