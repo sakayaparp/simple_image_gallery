@@ -14,3 +14,20 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['middleware' => ['api']], function () {
+    Route::post('/api/register', [
+        'uses' => 'Auth\AuthController@register',
+    ]);
+
+    Route::post('/api/signin', [
+        'uses' => 'Auth\AuthController@signin',
+    ]);
+
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('/api/user', [
+            'uses' => 'UserController@index',
+        ]);
+    });
+
+});
